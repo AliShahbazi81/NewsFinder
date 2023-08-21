@@ -15,10 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\NewsFinder.Services.ChatGPT\NewsFinder.Services.ChatGPT.csproj" />
       <ProjectReference Include="..\NewsFinder.Services.MessagingAPI\NewsFinder.Services.MessagingAPI.csproj" />
       <ProjectReference Include="..\NewsFinder.Services.TelegramAPI\NewsFinder.Services.TelegramAPI.csproj" />

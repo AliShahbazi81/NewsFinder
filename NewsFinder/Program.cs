@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using NewsFinder.Services.ChatGPT.Services;
+using NewsFinder.Services.ChatGPT.Services.ChatGPT;
 using NewsFinder.Services.MessagingAPI.Services.Email;
 using NewsFinder.Services.MessagingAPI.Services.SMS;
 using NewsFinder.Services.MessagingAPI.Services.SMS.Settings;
@@ -38,11 +39,12 @@ builder.Services.AddSingleton<ITelegramBotClient>(x =>
 //* ChatGPT API
 builder.Services.Configure<ChatGptSettings>
     (builder.Configuration.GetSection("ChatGPTCredentials"));
+builder.Services.AddHttpClient<IChatGptService, ChatGptService>();
 
 
 //! -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ End of Registering services -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_!
 
-
+builder.Services.AddOptions();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
