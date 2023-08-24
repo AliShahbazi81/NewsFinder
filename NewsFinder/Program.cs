@@ -5,6 +5,7 @@ using NewsFinder.Services.MessagingAPI.Services.Email;
 using NewsFinder.Services.MessagingAPI.Services.SMS;
 using NewsFinder.Services.MessagingAPI.Services.SMS.Settings;
 using NewsFinder.Services.TelegramAPI.Services;
+using NewsFinder.Services.TelegramAPI.Services.News;
 using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,7 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 var telegramBotSettings = builder.Configuration.GetSection("TelegramCredentials");
 
 builder.Services.Configure<TelegramSendingOptions>(telegramBotSettings);
+builder.Services.AddTransient<ITelegramNewsChannel, TelegramNewsChannel>();
 builder.Services.AddSingleton<ITelegramBotClient>(x =>
 {
     var settings = x.GetRequiredService<IOptions<TelegramSendingOptions>>().Value;
