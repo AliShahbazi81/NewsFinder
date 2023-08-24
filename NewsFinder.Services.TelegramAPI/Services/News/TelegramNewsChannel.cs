@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Options;
+using NewsFinder.Services.ChatGPT.Models.News;
+using NewsFinder.Services.TelegramAPI.Services.News.Templates;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
@@ -15,9 +17,15 @@ public class TelegramNewsChannel : ITelegramNewsChannel
         _channelName = options.Value.NewsChannel;
     }
 
-    public async Task<int> SendMessageAsync()
+    public async Task<int> SendMessageAsync(OpenAiResponse receivedNews)
     {
-        var message = await _botClient.SendTextMessageAsync(_channelName, "Test Message", ParseMode.Markdown);
-        return message.MessageId;
+        var message = MessageTemplate.FormatNewsMessage(
+            receivedNews.Impact,
+            receivedNews.Coin,
+            receivedNews.Summary,
+            receivedNews.Importance
+        );
+        var messageToBeSent = await _botClient.SendTextMessageAsync(_channelName, message, ParseMode.Markdown);
+        return messageToBeSent.MessageId;
     }
 }

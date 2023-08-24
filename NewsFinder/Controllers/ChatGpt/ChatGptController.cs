@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NewsFinder.Services.ChatGPT.Services.ChatGPT;
+using NewsFinder.Services.TelegramAPI.Services.News;
 
 namespace TweetsAndNewsOnTelegrm.Controllers.ChatGpt;
 
@@ -15,9 +16,21 @@ public class ChatGptController : Controller
     }
     
     [HttpPost("GetNewsSummary")]
-    public async Task<IActionResult> GetNewsSummary(string newsText)
+    public async Task<IActionResult> GetNewsSummary(
+        string newsText, 
+        [FromServices] ITelegramNewsChannel telegram = null)
     {
-        var summary = await _chatGptService.GetNewsSummaryAsync(newsText);
-        return Ok(summary);
+        try
+        {
+            var summary = await _chatGptService.GetNewsSummaryAsync(newsText);
+            await telegram.SendMessageAsync(summary);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 }
