@@ -63,7 +63,7 @@ public class ChatGptService : IChatGptService
                 throw new Exception("Unexpected response format from OpenAI API");
 
             var summary = lines[0].Replace("Summary: ", "").Trim();
-            var importance = lines[1].Replace("Importance: ", "").Trim();
+            var importance = Convert.ToInt16(lines[1].Replace("Importance: ", "").Trim());
             var impact = lines[2].Replace("Impact: ", "").Trim();
             var coin = lines[3].Replace("Coin: ", "").Trim();
 

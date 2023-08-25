@@ -31,6 +31,23 @@ public class ChatGptController : Controller
             Console.WriteLine(e);
             throw;
         }
-        
+    }
+    
+    [HttpPost("GetNewsSummaryPin")]
+    public async Task<IActionResult> GetNewsSummaryPin(
+        string newsText, 
+        [FromServices] ITelegramNewsChannel telegram = null)
+    {
+        try
+        {
+            var summary = await _chatGptService.GetNewsSummaryAsync(newsText);
+            await telegram.SendPinMessageAsync(summary);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

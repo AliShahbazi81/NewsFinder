@@ -19,13 +19,35 @@ public class TelegramNewsChannel : ITelegramNewsChannel
 
     public async Task<int> SendMessageAsync(OpenAiResponse receivedNews)
     {
+        var message = MessageToFormatNewsMessage(receivedNews);
+
+        var messageToBeSent = await _botClient.SendTextMessageAsync(_channelName, message, ParseMode.Markdown);
+        return messageToBeSent.MessageId;
+    }
+
+    public async Task<int> SendPinMessageAsync(OpenAiResponse receivedNews)
+    {
+        var message = MessageToFormatNewsMessage(
+            receivedNews, 
+            true);
+        
+        var messageToBeSent = await _botClient.SendTextMessageAsync(_channelName, message, ParseMode.Markdown);
+        await _botClient.PinChatMessageAsync(_channelName, messageToBeSent.MessageId);
+        
+        return messageToBeSent.MessageId;
+    }
+
+    private string MessageToFormatNewsMessage(
+        OpenAiResponse receivedNews, 
+        bool isUrgent = false)
+    {
         var message = MessageTemplate.FormatNewsMessage(
             receivedNews.Impact,
             receivedNews.Coin,
             receivedNews.Summary,
-            receivedNews.Importance
+            receivedNews.Importance,
+            isUrgent
         );
-        var messageToBeSent = await _botClient.SendTextMessageAsync(_channelName, message, ParseMode.Markdown);
-        return messageToBeSent.MessageId;
+        return message;
     }
 }
