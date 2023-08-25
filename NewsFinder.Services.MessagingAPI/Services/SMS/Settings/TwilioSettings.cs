@@ -7,5 +7,4 @@ public class TwilioSettings
     public string To { get; set; }
     public string From { get; set; }
     public string MessagingServiceSid { get; set; }
-    
 }

@@ -10,11 +10,11 @@ public class MessageTemplate
     //            "{Impact} impact on #{Coin}\n " +
     //            "Submitted by: {Submitter} on {Platform}";
     // }
-    
+
     private static string NewsTemplate(string impact = "positive", int importance = 0, bool isUrgent = false)
     {
         var impactEmoji = impact.ToLower() == "positive" ? "📈" : "📉";
-        var importanceText = importance >= 7 
+        var importanceText = importance >= 7
             ? $"*Importance: {importance}/10*"
             : $"Importance: {importance}/10";
 
@@ -43,4 +43,3 @@ public class MessageTemplate
             .Replace("{Platform}", "Twitter");
     }
 }
-    

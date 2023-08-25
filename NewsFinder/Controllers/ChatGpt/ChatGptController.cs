@@ -9,15 +9,15 @@ namespace TweetsAndNewsOnTelegrm.Controllers.ChatGpt;
 public class ChatGptController : Controller
 {
     private readonly IChatGptService _chatGptService;
-    
+
     public ChatGptController(IChatGptService chatGptService)
     {
         _chatGptService = chatGptService;
     }
-    
+
     [HttpPost("GetNewsSummary")]
     public async Task<IActionResult> GetNewsSummary(
-        string newsText, 
+        string newsText,
         [FromServices] ITelegramNewsChannel telegram = null)
     {
         try
@@ -32,10 +32,10 @@ public class ChatGptController : Controller
             throw;
         }
     }
-    
+
     [HttpPost("GetNewsSummaryPin")]
     public async Task<IActionResult> GetNewsSummaryPin(
-        string newsText, 
+        string newsText,
         [FromServices] ITelegramNewsChannel telegram = null)
     {
         try

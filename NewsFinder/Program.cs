@@ -6,6 +6,8 @@ using NewsFinder.Services.MessagingAPI.Services.SMS;
 using NewsFinder.Services.MessagingAPI.Services.SMS.Settings;
 using NewsFinder.Services.TelegramAPI.Services;
 using NewsFinder.Services.TelegramAPI.Services.News;
+using NewsFinder.Services.TwittersAPI.Services;
+using NewsFinder.Services.TwittersAPI.Services.News;
 using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +23,7 @@ builder.Services.AddSwaggerGen();
 
 //* Twilio
 builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("TwilioCredentials"));
-builder.Services.AddSingleton(x => x.GetRequiredService<IOptions<TwilioSettings>>().Value);
+builder.Services.AddScoped(x => x.GetRequiredService<IOptions<TwilioSettings>>().Value);
 builder.Services.AddScoped<ITwilioService, TwilioService>();
 
 //* Email Settings
@@ -31,8 +33,8 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 var telegramBotSettings = builder.Configuration.GetSection("TelegramCredentials");
 
 builder.Services.Configure<TelegramSendingOptions>(telegramBotSettings);
-builder.Services.AddTransient<ITelegramNewsChannel, TelegramNewsChannel>();
-builder.Services.AddSingleton<ITelegramBotClient>(x =>
+builder.Services.AddScoped<ITelegramNewsChannel, TelegramNewsChannel>();
+builder.Services.AddScoped<ITelegramBotClient>(x =>
 {
     var settings = x.GetRequiredService<IOptions<TelegramSendingOptions>>().Value;
     return new TelegramBotClient(settings.API_TOKEN);
@@ -42,6 +44,11 @@ builder.Services.AddSingleton<ITelegramBotClient>(x =>
 builder.Services.Configure<ChatGptSettings>
     (builder.Configuration.GetSection("ChatGPTCredentials"));
 builder.Services.AddHttpClient<IChatGptService, ChatGptService>();
+
+//* Twitter API
+builder.Services.Configure<TwitterSettings>
+    (builder.Configuration.GetSection("TwitterCredentials"));
+builder.Services.AddScoped<ITwitterNews, TwitterNews>();
 
 
 //! -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ End of Registering services -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_!

@@ -6,7 +6,6 @@ namespace NewsFinder.DataAccess.Data.Users;
 
 public class Role : IdentityRole<Guid>
 {
-    
 }
 
 public class RoleBuilder : IEntityTypeConfiguration<Role>

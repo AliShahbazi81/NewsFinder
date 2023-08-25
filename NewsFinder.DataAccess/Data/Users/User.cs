@@ -12,7 +12,6 @@ public class User : IdentityUser<Guid>
     public string DeletionReason { get; set; } = string.Empty;
     public DateTime? DeletionTime { get; set; } = null;
     public string DeletedBy { get; set; } = string.Empty;
-    
 }
 
 public class UserBuilder : IEntityTypeConfiguration<User>

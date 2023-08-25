@@ -14,7 +14,7 @@ public class TelegramController : Controller
     {
         _telegramNewsChannel = telegramNewsChannel;
     }
-    
+
     // [HttpPost("SendTestMessage")]
     // public async Task<IActionResult> SendMessage()
     // {

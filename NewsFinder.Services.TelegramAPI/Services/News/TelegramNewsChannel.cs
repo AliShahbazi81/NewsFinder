@@ -28,17 +28,17 @@ public class TelegramNewsChannel : ITelegramNewsChannel
     public async Task<int> SendPinMessageAsync(OpenAiResponse receivedNews)
     {
         var message = MessageToFormatNewsMessage(
-            receivedNews, 
+            receivedNews,
             true);
-        
+
         var messageToBeSent = await _botClient.SendTextMessageAsync(_channelName, message, ParseMode.Markdown);
         await _botClient.PinChatMessageAsync(_channelName, messageToBeSent.MessageId);
-        
+
         return messageToBeSent.MessageId;
     }
 
     private string MessageToFormatNewsMessage(
-        OpenAiResponse receivedNews, 
+        OpenAiResponse receivedNews,
         bool isUrgent = false)
     {
         var message = MessageTemplate.FormatNewsMessage(
