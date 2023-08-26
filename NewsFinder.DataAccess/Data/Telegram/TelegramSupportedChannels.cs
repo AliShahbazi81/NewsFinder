@@ -25,16 +25,16 @@ public class TelegramSupportedChannelsConfiguration : IEntityTypeConfiguration<T
         builder.Property(x => x.UserName)
             .IsRequired();
         builder.Property(x => x.ChannelName)
-            .IsRequired();
+            .IsRequired(false);
         builder.Property(x => x.ChannelLink)
-            .IsRequired();
+            .IsRequired(false);
         builder.Property(x => x.ChannelDescription)
             .IsRequired(false);
         builder.Property(x => x.ChannelLanguage)
             .IsRequired(false);
         builder.Property(x => x.ChannelLastPost)
-            .IsRequired();
+            .IsRequired(false);
         builder.Property(x => x.LastTimeChecked)
-            .IsRequired();
+            .IsRequired(false);
     }
 }

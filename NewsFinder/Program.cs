@@ -8,6 +8,7 @@ using NewsFinder.Services.MessagingAPI.Services.SMS;
 using NewsFinder.Services.MessagingAPI.Services.SMS.Settings;
 using NewsFinder.Services.TelegramAPI.Services;
 using NewsFinder.Services.TelegramAPI.Services.News;
+using NewsFinder.Services.TelegramAPI.Services.News.GetPosts;
 using NewsFinder.Services.TwittersAPI.Services;
 using NewsFinder.Services.TwittersAPI.Services.News;
 using Telegram.Bot;
@@ -40,6 +41,7 @@ var telegramBotSettings = builder.Configuration.GetSection("TelegramCredentials"
 
 builder.Services.Configure<TelegramSendingOptions>(telegramBotSettings);
 builder.Services.AddScoped<IPostInNews, PostInNews>();
+builder.Services.AddScoped<IGetNews, GetNews>();
 builder.Services.AddScoped<ITelegramBotClient>(x =>
 {
     var settings = x.GetRequiredService<IOptions<TelegramSendingOptions>>().Value;

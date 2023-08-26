@@ -6,11 +6,11 @@ namespace TweetsAndNewsOnTelegrm.Controllers.Telegram;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TelegramController : Controller
+public class PostNewsController : Controller
 {
     private readonly IPostInNews _postInNews;
 
-    public TelegramController(IPostInNews postInNews)
+    public PostNewsController(IPostInNews postInNews)
     {
         _postInNews = postInNews;
     }

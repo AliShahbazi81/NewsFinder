@@ -34,4 +34,8 @@
 
 
 
+    <ItemGroup>
+      <Folder Include="Controllers\Telegram\PostNews\" />
+    </ItemGroup>
+
 </Project>
