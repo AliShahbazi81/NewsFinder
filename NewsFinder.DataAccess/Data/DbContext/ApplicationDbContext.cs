@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NewsFinder.DataAccess.Data.Telegram;
 using NewsFinder.DataAccess.Data.Users;
 
 namespace NewsFinder.DataAccess.Data.DbContext;
@@ -12,4 +13,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
     }
 
     public DbSet<User> User { get; set; }
+    public DbSet<Role> Role { get; set; }
+    public DbSet<TelegramSupportedChannels> TelegramSupportedChannels { get; set; }
 }

@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using NewsFinder.DataAccess.Data.DbContext;
 using NewsFinder.Services.ChatGPT.Services;
 using NewsFinder.Services.ChatGPT.Services.ChatGPT;
 using NewsFinder.Services.MessagingAPI.Services.Email;
@@ -21,6 +23,10 @@ builder.Services.AddSwaggerGen();
 
 //! -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ Register services -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_!
 
+//* Database
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 //* Twilio
 builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("TwilioCredentials"));
 builder.Services.AddScoped(x => x.GetRequiredService<IOptions<TwilioSettings>>().Value);
@@ -33,7 +39,7 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 var telegramBotSettings = builder.Configuration.GetSection("TelegramCredentials");
 
 builder.Services.Configure<TelegramSendingOptions>(telegramBotSettings);
-builder.Services.AddScoped<ITelegramNewsChannel, TelegramNewsChannel>();
+builder.Services.AddScoped<IPostInNews, PostInNews>();
 builder.Services.AddScoped<ITelegramBotClient>(x =>
 {
     var settings = x.GetRequiredService<IOptions<TelegramSendingOptions>>().Value;

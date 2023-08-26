@@ -8,11 +8,11 @@ namespace TweetsAndNewsOnTelegrm.Controllers.Telegram;
 [Route("api/[controller]")]
 public class TelegramController : Controller
 {
-    private readonly ITelegramNewsChannel _telegramNewsChannel;
+    private readonly IPostInNews _postInNews;
 
-    public TelegramController(ITelegramNewsChannel telegramNewsChannel)
+    public TelegramController(IPostInNews postInNews)
     {
-        _telegramNewsChannel = telegramNewsChannel;
+        _postInNews = postInNews;
     }
 
     // [HttpPost("SendTestMessage")]

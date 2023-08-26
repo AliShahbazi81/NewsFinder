@@ -6,12 +6,12 @@ using Telegram.Bot.Types.Enums;
 
 namespace NewsFinder.Services.TelegramAPI.Services.News;
 
-public class TelegramNewsChannel : ITelegramNewsChannel
+public class PostInNews : IPostInNews
 {
     private readonly ITelegramBotClient _botClient;
     private readonly string _channelName;
 
-    public TelegramNewsChannel(ITelegramBotClient botClient, IOptions<TelegramSendingOptions> options)
+    public PostInNews(ITelegramBotClient botClient, IOptions<TelegramSendingOptions> options)
     {
         _botClient = botClient;
         _channelName = options.Value.NewsChannel;

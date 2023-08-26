@@ -1,34 +1,41 @@
 using Microsoft.Extensions.Options;
 using NewsFinder.Services.TwittersAPI.DTO;
 using Tweetinvi;
-using Tweetinvi.Models;
-using Tweetinvi.Parameters;
 
 namespace NewsFinder.Services.TwittersAPI.Services.News;
 
 public class TwitterNews : ITwitterNews
 {
     private readonly TwitterClient _client;
+    private readonly HttpClient _httpClient;
 
-    public TwitterNews(IOptions<TwitterSettings> options)
+    public TwitterNews(IOptions<TwitterSettings> options, HttpClient httpClient)
     {
+        _httpClient = httpClient;
         _client = new TwitterClient(
             options.Value.CONSUMER_KEY, 
             options.Value.CONSUMER_SECRET, 
             options.Value.ACCESS_TOKEN, 
             options.Value.ACCESS_TOKEN_SECRET);
+        
+        _httpClient = new HttpClient();
+        _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {options.Value.ACCESS_TOKEN}");
     }
 
     public async Task<TwitterTweetDto?> GetLatestTweetAsync(string username)
     {
-        var userTimelineParameters = new GetUserTimelineParameters(username)
-        {
-            PageSize = 1
-        };
+        // Get user details using v2 API to obtain the user's ID
+        var userResponse = await _client.UsersV2.GetUserByNameAsync(username);
+        if (userResponse == null || userResponse.User == null)
+            return null;
 
-        var tweets = await _client.Timelines.GetUserTimelineAsync(userTimelineParameters);
+        var userId = userResponse.User.Id;
 
-        var latestTweet = tweets.FirstOrDefault();
+        // Fetch the user's timeline to get the latest tweet using the user's ID
+        var url = $"https://api.twitter.com/2/tweets/timelines/user/{userId}?max_results=1";
+        var tweetsResponse = await _client.TweetsV2.GetTweetsAsync(userId.ToString());
+
+        var latestTweet = tweetsResponse?.Tweets?.FirstOrDefault();
 
         if (latestTweet == null)
             return null;
@@ -37,11 +44,8 @@ public class TwitterNews : ITwitterNews
         {
             CreatedAt = Convert.ToDateTime(latestTweet.CreatedAt.ToLocalTime()),
             TweetId = latestTweet.Id,
-            Text = latestTweet.Text,
-            Url = latestTweet.Url,
-            MediaUrl = latestTweet.Media,
+            Text = latestTweet.Text
         };
-
     }
 
     public async Task<TwitterUserDto?> GetUserCredentials(string screenName)
@@ -61,4 +65,14 @@ public class TwitterNews : ITwitterNews
         }
         return null;
     }
+}
+
+public class TweetV2Response
+{
+    public TweetData Data { get; set; }
+}
+
+public class TweetData
+{
+    public string Text { get; set; }
 }

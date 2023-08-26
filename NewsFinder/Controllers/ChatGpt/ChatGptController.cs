@@ -18,12 +18,12 @@ public class ChatGptController : Controller
     [HttpPost("GetNewsSummary")]
     public async Task<IActionResult> GetNewsSummary(
         string newsText,
-        [FromServices] ITelegramNewsChannel telegram = null)
+        [FromServices] IPostInNews postIn = null)
     {
         try
         {
             var summary = await _chatGptService.GetNewsSummaryAsync(newsText);
-            await telegram.SendMessageAsync(summary);
+            await postIn.SendMessageAsync(summary);
             return Ok();
         }
         catch (Exception e)
@@ -36,12 +36,12 @@ public class ChatGptController : Controller
     [HttpPost("GetNewsSummaryPin")]
     public async Task<IActionResult> GetNewsSummaryPin(
         string newsText,
-        [FromServices] ITelegramNewsChannel telegram = null)
+        [FromServices] IPostInNews postIn = null)
     {
         try
         {
             var summary = await _chatGptService.GetNewsSummaryAsync(newsText);
-            await telegram.SendPinMessageAsync(summary);
+            await postIn.SendPinMessageAsync(summary);
             return Ok();
         }
         catch (Exception e)
