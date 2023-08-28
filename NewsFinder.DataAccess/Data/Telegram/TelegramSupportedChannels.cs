@@ -7,12 +7,7 @@ public class TelegramSupportedChannels
 {
     public string Id { get; set; }
     public string UserName { get; set; } = string.Empty;
-    public string ChannelName { get; set; } = string.Empty;
-    public string ChannelLink { get; set; } = string.Empty;
-    public string? ChannelDescription { get; set; } = string.Empty;
-    public string? ChannelLanguage { get; set; } = string.Empty;
-    public string ChannelLastPost { get; set; } = string.Empty;
-    public DateTime LastTimeChecked { get; set; }
+    public DateTime LastTimeChecked { get; set; } = DateTime.UtcNow;
 }
 
 public class TelegramSupportedChannelsConfiguration : IEntityTypeConfiguration<TelegramSupportedChannels>
@@ -24,17 +19,7 @@ public class TelegramSupportedChannelsConfiguration : IEntityTypeConfiguration<T
             .ValueGeneratedNever();
         builder.Property(x => x.UserName)
             .IsRequired();
-        builder.Property(x => x.ChannelName)
-            .IsRequired(false);
-        builder.Property(x => x.ChannelLink)
-            .IsRequired(false);
-        builder.Property(x => x.ChannelDescription)
-            .IsRequired(false);
-        builder.Property(x => x.ChannelLanguage)
-            .IsRequired(false);
-        builder.Property(x => x.ChannelLastPost)
-            .IsRequired(false);
         builder.Property(x => x.LastTimeChecked)
-            .IsRequired(false);
+            .IsRequired();
     }
 }
